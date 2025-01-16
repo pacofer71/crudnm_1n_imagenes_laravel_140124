@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -21,16 +23,24 @@ class User extends Authenticatable
         'imagen'
     ];
 
-    public function departament(): BelongsTo{
+    public function departament(): BelongsTo
+    {
         return $this->belongsTo(Departament::class);
     }
-    public function roles(): BelongsToMany{
+    public function roles(): BelongsToMany
+    {
         return $this->belongsToMany(Role::class);
     }
 
-    public function getRolesUserId(): array{
+    public function getRolesUserId(): array
+    {
         return $this->roles()->pluck('role_id')->toArray();
     }
 
-   
+    public function nombre(): Attribute
+    {
+        return Attribute::make(
+            set: fn(string $value) => ucfirst($value),
+        );
+    }
 }

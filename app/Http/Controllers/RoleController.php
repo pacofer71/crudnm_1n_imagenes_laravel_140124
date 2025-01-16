@@ -12,7 +12,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles=Role::orderBy('nombre')->get();
+        $roles = Role::orderBy('nombre')->get();
         return view('roles.index', compact('roles'));
     }
 
@@ -67,7 +67,6 @@ class RoleController extends Controller
     {
         $role->delete();
         return redirect()->route('roles.index')->with('mensaje', 'role borrado');
-
     }
     private function rules(?int $id = null): array
     {

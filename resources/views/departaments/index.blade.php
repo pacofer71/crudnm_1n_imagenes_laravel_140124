@@ -10,7 +10,8 @@
 
 @section('contenido')
     <div class="flex flex-row-reverse mb-2">
-        <a href="{{ route('departaments.create') }}" class="p-2 rounded-xl text-white font-bold bg-blue-500 hover:bg-blue-700">
+        <a href="{{ route('departaments.create') }}"
+            class="p-2 rounded-xl text-white font-bold bg-blue-500 hover:bg-blue-700">
             <i class="fas fa-add mr-2"></i>NUEVO
         </a>
     </div>
@@ -40,13 +41,14 @@
                                 style="background-color:{{ $item->color }};">{{ $item->color }}</div>
                         </td>
                         <td class="px-6 py-4">
-                            <form action="{{ route('departaments.destroy', $item) }}" method="POST">
+                            <form action="{{ route('departaments.destroy', $item) }}" method="POST"
+                                id="form-{{ $item->id }}">
                                 @csrf
                                 @method('DELETE')
                                 <a href="{{ route('departaments.edit', $item) }}" class="mr-2">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <button type="submit">
+                                <button type="button" onclick="confirmDelete({{ $item->id }})">
                                     <i class="fas fa-trash text-red-600"></i>
                                 </button>
                             </form>
@@ -58,5 +60,8 @@
     </div>
 @endsection
 @section('alertas')
-<x-alerta />
+    <x-alerta />
+@endsection
+@section('confirm')
+    <x-confirmar />
 @endsection

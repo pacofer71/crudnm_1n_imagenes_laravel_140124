@@ -59,16 +59,16 @@
 
                         </td>
                         <td class="px-6 py-4">
-                           <form action="{{ route('users.destroy', $item) }}" method="POST">
-                            @csrf
-                            @method('delete')
-                            <a href="{{ route('users.edit', $item) }}" class="mr-2">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <button type='submit'>
-                                <i class="fas fa-trash"></i>
-                            </button>
-                           </form>
+                            <form action="{{ route('users.destroy', $item) }}" method="POST" id="form-{{ $item->id }}">
+                                @csrf
+                                @method('delete')
+                                <a href="{{ route('users.edit', $item) }}" class="mr-2">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type='button' onclick="confirmDelete({{ $item->id }})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
@@ -80,5 +80,8 @@
     </div>
 @endsection
 @section('alertas')
-<x-alerta />
+    <x-alerta />
+@endsection
+@section('confirm')
+    <x-confirmar />
 @endsection
