@@ -12,7 +12,7 @@ class DepartamentController extends Controller
      */
     public function index()
     {
-        $departamentos=Departament::orderBy('nombre')->get();
+        $departamentos = Departament::orderBy('nombre')->get();
         return view('departaments.index', compact('departamentos'));
     }
 
@@ -29,23 +29,21 @@ class DepartamentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate($this->rules());
+        Departament::create($request->all());
+        return redirect()->route('departaments.index')->with('mensaje', 'departamento creado');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Departament $departament)
-    {
-        //
-    }
+    public function show(Departament $departament) {}
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Departament $departament)
-    {
-        //
+    public function edit(Departament $departament) {
+        return view('departaments.edit', compact('departament'));
     }
 
     /**
@@ -53,7 +51,9 @@ class DepartamentController extends Controller
      */
     public function update(Request $request, Departament $departament)
     {
-        //
+        $request->validate($this->rules($departament->id));
+        $departament->update($request->all());
+        return redirect()->route('departaments.index')->with('mensaje', 'departamento editado');
     }
 
     /**
@@ -61,6 +61,15 @@ class DepartamentController extends Controller
      */
     public function destroy(Departament $departament)
     {
-        //
+        $departament->delete();
+        return redirect()->route('departaments.index')->with('mensaje', 'departamento borrado');
+
+    }
+    private function rules(?int $id = null): array
+    {
+        return [
+            'nombre' => ['required', 'string', 'min:3', 'max:50', 'unique:departaments,nombre,' . $id],
+            'color' => ['required', 'color-hex'],
+        ];
     }
 }

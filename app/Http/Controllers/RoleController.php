@@ -29,7 +29,9 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate($this->rules());
+        Role::create($request->all());
+        return redirect()->route('roles.index')->with('mensaje', 'rol creado');
     }
 
     /**
@@ -45,7 +47,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        return view('roles.edit', compact('role'));
     }
 
     /**
@@ -53,7 +55,9 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        $request->validate($this->rules($role->id));
+        $role->update($request->all());
+        return redirect()->route('roles.index')->with('mensaje', 'role editado');
     }
 
     /**
@@ -61,6 +65,15 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        return redirect()->route('roles.index')->with('mensaje', 'role borrado');
+
+    }
+    private function rules(?int $id = null): array
+    {
+        return [
+            'nombre' => ['required', 'string', 'min:3', 'max:50', 'unique:roles,nombre,' . $id],
+            'color' => ['required', 'color-hex'],
+        ];
     }
 }
